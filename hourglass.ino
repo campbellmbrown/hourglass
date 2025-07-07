@@ -4,7 +4,7 @@
 
 #define TMP102_ADDRESS 0x48   // Default I2C address for TMP102
 
-static U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* clock=*/ SCL, /* data=*/ SDA, /* reset=*/ U8X8_PIN_NONE);  // High speed I2C
+static U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);  // High speed I2C
 
 void setup(void) {
   Wire.begin();               // Start I2C communication
@@ -20,7 +20,7 @@ float readTemperatureTMP102() {
   Wire.requestFrom(TMP102_ADDRESS, 2);   // Request 2 bytes from TMP102
   Serial.print("Wire.available(): ");
   Serial.println(Wire.available());
-  
+
   if (Wire.available() == 2) {           // Check if 2 bytes were received
     byte msb = Wire.read();              // Read the most significant byte
     byte lsb = Wire.read();              // Read the least significant byte

@@ -1,8 +1,7 @@
 #include <Wire.h>
 #include <Arduino.h>
 #include <U8g2lib.h>
-
-#define TMP102_ADDRESS 0x48   // Default I2C address for TMP102
+#include "src/temperature.hpp"
 
 static U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);  // High speed I2C
 
@@ -10,30 +9,6 @@ void setup(void) {
   Wire.begin();               // Start I2C communication
   u8g2.begin();               // Initialize the display
   Serial.begin(9600);         // For debugging, if needed
-}
-
-float readTemperatureTMP102() {
-  Wire.beginTransmission(TMP102_ADDRESS);
-  Wire.write(0x00);                 // Point to temperature register
-  Wire.endTransmission();
-
-  Wire.requestFrom(TMP102_ADDRESS, 2);   // Request 2 bytes from TMP102
-  Serial.print("Wire.available(): ");
-  Serial.println(Wire.available());
-
-  if (Wire.available() == 2) {           // Check if 2 bytes were received
-    byte msb = Wire.read();              // Read the most significant byte
-    byte lsb = Wire.read();              // Read the least significant byte
-
-    // Combine bytes and convert to temperature
-    int16_t tempRaw = ((msb << 8) | lsb) >> 4;   // 12-bit temperature
-    float temperature = tempRaw * 0.0625;        // TMP102 scale factor
-
-
-    return temperature;
-  } else {
-    return NAN;  // Return NaN if reading failed
-  }
 }
 
 void loop(void) {

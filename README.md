@@ -14,5 +14,6 @@ pip install adafruit-nrfutil
 Build:
 
 ```bash
-arduino-cli compile --fqbn Seeeduino:nrf52:xiaonRF52840Sense --build-path build .
+cmake -S . -B build
+cmake --build build
 ```
